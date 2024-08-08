@@ -130,6 +130,32 @@ ll ModExponentiation(ll base, ll power, ll mod) {  // fast Power With Multiplica
     return result;
 }
 
+
+int multiplyRecursive(int A, int B, int ans = 0 , int mod = 1e9) {//function to multiply to very large numbers
+    if (B == 0) {
+        return ans;
+    }
+    if (B & 1) {
+        ans = (ans + A) % mod;
+    }
+    A = (A + A) % mod;
+    return multiplyRecursive(A, B >> 1, ans);
+}
+
+
+int multiplyIterative(int A, int B) { // function to multiply to very large numbers
+    int ans = 0;
+    while(B) {
+        if(B & 1) {
+            ans = (ans + A) % mod;
+        }
+        A = (A + A) % mod;
+        B >>= 1;
+    }
+    return ans;
+}
+
+
 void solve() {
 
 
