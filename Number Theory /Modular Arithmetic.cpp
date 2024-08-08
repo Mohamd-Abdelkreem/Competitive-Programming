@@ -136,9 +136,9 @@ int multiplyRecursive(int A, int B, int ans = 0 , int mod = 1e9) {//function to 
         return ans;
     }
     if (B & 1) {
-        ans = (ans + A) % mod;
+        ans = (ans % mod + A % mod) % mod;
     }
-    A = (A + A) % mod;
+    A = (A % mod + A % mod) % mod;
     return multiplyRecursive(A, B >> 1, ans);
 }
 
@@ -147,9 +147,9 @@ int multiplyIterative(int A, int B) { // function to multiply to very large numb
     int ans = 0;
     while(B) {
         if(B & 1) {
-            ans = (ans + A) % mod;
+            ans = (ans % mod + A % mod) % mod;
         }
-        A = (A + A) % mod;
+        A = (A % mod + A % mod) % mod;
         B >>= 1;
     }
     return ans;
