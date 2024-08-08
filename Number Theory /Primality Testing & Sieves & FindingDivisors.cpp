@@ -104,17 +104,6 @@ vector<int> divisors(int n) {
 }
 
 
-vector<int> primeFactorization(int n) {
-    vector<int> Primes;
-    for (int i = 2; i * i <= n; i++) {
-        while (n % i == 0)
-            Primes.pb(i), n /= i;
-    }
-    if (n!=1)
-        Primes.pb(n);
-    return Primes;
-}
-
 void solve() {
   
 }
