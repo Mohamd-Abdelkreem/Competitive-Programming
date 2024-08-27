@@ -81,6 +81,14 @@ ll gcd(ll a, ll b) {
     }
     return gcd(b, a % b);
 }
+ll gcdIterative(ll a, ll b) {
+    while (b!= 0) {
+        ll temp = a;
+        a = b;
+        b = temp % b;
+    }
+    return a;
+}
 ll lcm(ll a, ll b) {
     return (a * b) / gcd(a, b);
 }
