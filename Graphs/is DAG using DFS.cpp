@@ -112,12 +112,12 @@ void RIP() {
     for (int i = 1; i <= n; i++) {
         if (vis[i] == NOTVISITED) {
             if (!dfs(i)) {
-                YES;
+                NO;
                 return;
             }
         }
     }
-    NO;
+    YES;
 
 }
 
