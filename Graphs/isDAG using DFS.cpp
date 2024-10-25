@@ -83,11 +83,11 @@ vector<vi > adj;
 vector<int> vis;
 const int NOTVISITED = 0, INPROGRESS = 1, VISTED = 2;
 
-bool dfs(int u) {
+bool isDAG(int u) {
     vis[u] = INPROGRESS;
     for (auto &v: adj[u]) {
         if (vis[v] == NOTVISITED) {
-            if (!dfs(v)) {
+            if (!isDAG(v)) {
                 return false;
             }
         } else if (vis[v] == INPROGRESS) {
@@ -111,7 +111,7 @@ void RIP() {
     }
     for (int i = 1; i <= n; i++) {
         if (vis[i] == NOTVISITED) {
-            if (!dfs(i)) {
+            if (!isDAG(i)) {
                 NO;
                 return;
             }
