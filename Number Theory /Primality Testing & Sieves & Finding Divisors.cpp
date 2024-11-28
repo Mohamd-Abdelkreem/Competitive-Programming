@@ -66,17 +66,20 @@ ostream &operator<<(ostream &out, const vector<T> &v) {
 }
 
 
-bool IsPrime(ll n) {
-    //TC = O(log n)
-    if (n == 2)return true;
-    if (n <= 1)return false;
+bool isPrime(int n) {
+    if (n == 2)
+        return true;
+    if (n % 2 == 0 || n == 1)
+        return false;
 
-    for (ll i = 3; i * i <= n; i += 2) {
-        if (n % i == 0) return false;
+
+    for (long long i = 3; i * i <= n; i += 2) {
+        if (n % i == 0) {
+            return false;
+        }
     }
     return true;
 }
-
 
 void Sieve(ll Range) {
     //TC = O(N * log(log(N)))
