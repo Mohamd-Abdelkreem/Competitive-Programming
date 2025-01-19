@@ -85,7 +85,6 @@ const int N = 3e5 + 5;
 int n, m;
 vector<vector<int> > adj(N);
 vector<vector<int> > comps;
-int arr[N];
 vector<int> inStack(N), lowLinkNumber(N), dfsNumber(N, -1);
 stack<int> stSCC;
 int timer = 0;
@@ -116,11 +115,7 @@ void tarjan(int node) {
 }
 
 void RIP() {
-    cin >> n;
-    for (int i = 1; i <= n; ++i) {
-        cin >> arr[i];
-    }
-    cin >> m;
+    cin >> n >> m;
     for (int i = 0; i < m; ++i) {
         int u, v;
         cin >> u >> v;
