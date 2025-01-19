@@ -80,95 +80,55 @@ ostream &operator<<(ostream &out, const vector<T> &v) {
     }
     return out;
 }
-void Tarjan(int node, int &cnt, vector<vector<int> > &adj, vector<int> &inStack, vector<int> &dfsNumber,
-            vector<int> &lowLinkNumber, stack<int> &stSCC, vector<vector<int> > &FinalSCC_Componentes) {
 
-    // Assign discovery time and low-link value to the current node
-    dfsNumber[node] = lowLinkNumber[node] = ++cnt, inStack[node] = 1;
-    // Push the current node onto the stack
+const int N = 3e5 + 5;
+int n, m;
+vector<vector<int> > adj(N);
+vector<vector<int> > comps;
+int arr[N];
+vector<int> inStack(N), lowLinkNumber(N), dfsNumber(N, -1);
+stack<int> stSCC;
+int timer = 0;
+
+void tarjan(int node) {
+    lowLinkNumber[node] = dfsNumber[node] = ++timer;
+    inStack[node] = 1;
     stSCC.push(node);
-
-    // Traverse all children of the current node
-    for (int child: adj[node]) {
-        // If the child has not been visited yet
+    for (int &child: adj[node]) {
         if (dfsNumber[child] == -1) {
-            // Recursively call Tarjan on the child
-            Tarjan(child, cnt, adj, inStack, dfsNumber, lowLinkNumber, stSCC, FinalSCC_Componentes);
-            // Update the low-link value of the current node
+            tarjan(child);
             lowLinkNumber[node] = min(lowLinkNumber[node], lowLinkNumber[child]);
-        }
-        // If the child is in the current stack (part of the current SCC)
-        else if (inStack[child]) {
-            // Update the low-link value of the current node
+        } else if (inStack[child]) {
             lowLinkNumber[node] = min(lowLinkNumber[node], dfsNumber[child]);
         }
     }
-
-    // If the current node is the root of an SCC
-    if (lowLinkNumber[node] == dfsNumber[node]) {
-        vector<int> elements; // To store nodes in the current SCC
-        elements.clear();
-
-        // Pop nodes from the stack until the current node is reached
-        while (stSCC.top() != node) {
-            elements.push_back(stSCC.top()); // Add to the SCC
-            inStack[stSCC.top()] = 0; // Mark as not in the stack
-            stSCC.pop(); // Remove from the stack
+    if (dfsNumber[node] == lowLinkNumber[node]) {
+        vector<int> elements;
+        int x = -1;
+        while (x != node) {
+            x = stSCC.top();
+            stSCC.pop();
+            inStack[x] = 0;
+            elements.pb(x);
         }
-
-        // Add the current node to the SCC
-        elements.push_back(stSCC.top());
-        inStack[stSCC.top()] = 0; // Mark as not in the stack
-        stSCC.pop(); // Remove from the stack
-
-        // Add the SCC to the list of all SCCs
-        FinalSCC_Componentes.push_back(elements);
+        comps.push_back(elements);
     }
-}
-
-vector<vector<int> > SCC(int n, int m) {
-    const int N = 500001; // Maximum number of nodes
-    int cnt = 0; // Counter for discovery time
-    vector<vector<int> > adj(n + 1), FinalSCC_Componentes; // Adjacency list and SCCs
-    vector<int> inStack(N), dfsNumber(N, -1), lowLinkNumber(N); // Tarjan's algorithm data structures
-    stack<int> stSCC; // Stack to store nodes in the current SCC
-
-    // Read the graph edges
-    for (int i = 0; i < m; ++i) {
-        int u, v;
-        cin >> u >> v;
-        adj[u].push_back(v); // Add edge to the adjacency list
-    }
-
-    // Run Tarjan's algorithm on all unvisited nodes
-    for (int i = 0; i < n; ++i) {
-        if (dfsNumber[i] == -1) // If the node is unvisited
-            Tarjan(i, cnt, adj, inStack, dfsNumber, lowLinkNumber, stSCC, FinalSCC_Componentes);
-    }
-
-    // Return the list of SCCs
-    return FinalSCC_Componentes;
 }
 
 void RIP() {
-    int n, m;
-    cin >> n >> m; // Read the number of nodes and edges
-
-    // Find all SCCs using Tarjan's algorithm
-    vector<vector<int> > components = SCC(n, m);
-
-    // Reverse the SCCs to get them in topological order
-    // reverse(all(components));
-
-    // Print the number of SCCs
-    cout << sz(components) << L;
-
-    // Print each SCC
-    for (const auto &component: components) {
-        cout << sz(component) << " "; // Print the size of the SCC
-        for (int u: component)
-            cout << u << " "; // Print the nodes in the SCC
-        cout << L; // Newline after each SCC
+    cin >> n;
+    for (int i = 1; i <= n; ++i) {
+        cin >> arr[i];
+    }
+    cin >> m;
+    for (int i = 0; i < m; ++i) {
+        int u, v;
+        cin >> u >> v;
+        adj[u].pb(v);
+    }
+    for (int i = 1; i <= n; ++i) {
+        if (dfsNumber[i] == -1)
+            tarjan(i);
     }
 }
 
