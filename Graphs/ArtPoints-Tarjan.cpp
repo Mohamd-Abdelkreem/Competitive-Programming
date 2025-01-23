@@ -87,6 +87,7 @@ vector<vector<int> > adj(N);
 set<int> artPoints;
 vector<int> lowLinkNumber(N), dfsNumber(N, -1);
 int timer = 0, root = 0;
+stack<pair<int, int> > component;
 
 void tarjan(int node, int parent) {
     lowLinkNumber[node] = dfsNumber[node] = ++timer;
@@ -106,6 +107,34 @@ void tarjan(int node, int parent) {
         }
     }
 }
+
+/*
+ * Note if You Want to Print All Biconnected Components
+ *
+void PrintAllBiconnectedComponents(int node, int parent) {
+    lowLinkNumber[node] = dfsNumber[node] = ++timer;
+    for (int &child: adj[node]) {
+        if (node != child && dfsNumber[child] < dfsNumber[node]) {
+            component.push({node, child});
+        }
+        if (dfsNumber[child] == -1) {
+            PrintAllBiconnectedComponents(child, node);
+            lowLinkNumber[node] = min(lowLinkNumber[node], lowLinkNumber[child]);
+            if (lowLinkNumber[child] >= dfsNumber[node]) {
+                pair<int, int> edge;
+                do {
+                    edge = component.top();
+                    component.pop();
+                    cout << edge.first << " " << edge.second << "\n";
+                } while (edge.first != node || edge.second != child);
+                cout << "\n";
+            }
+        } else if (child != parent) {
+            lowLinkNumber[node] = min(lowLinkNumber[node], dfsNumber[child]);
+        }
+    }
+}
+*/
 
 void RIP() {
     cin >> n >> m;
