@@ -95,12 +95,19 @@ void tarjan(int node, int parent) {
         if (dfsNumber[child] == -1) {
             tarjan(child, node);
             lowLinkNumber[node] = min(lowLinkNumber[node], lowLinkNumber[child]);
+            // The Next Condtions Is The Most Well Known.
+            if (lowLinkNumber[child] > dfsNumber[node]) {
+                bridges.pb({node, child});
+            }
         } else if (child != parent) {
             lowLinkNumber[node] = min(lowLinkNumber[node], dfsNumber[child]);
         }
-    }
-    if (dfsNumber[node] == lowLinkNumber[node] && parent != -1) {
-        bridges.pb({parent, node});
+        /*
+        Note : The Condition (lowLinkNumber[child] > dfsNumber[node]) Is Equal To The Following Conditions
+        if (dfsNumber[node] == lowLinkNumber[node] && parent != -1) {
+            bridges.pb({parent, node});
+          }
+        */
     }
 }
 
